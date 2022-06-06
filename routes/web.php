@@ -94,3 +94,38 @@ Route::prefix('admin')->group(function () {
 
 Route::resource('photos',PhotoController::class);
 
+// Route::any('testother','TestRequestController@index')->name('testRoute');
+Route::any('/test-request/{name}','TestRequestController@testRequest');
+
+#download file
+Route::any('/download/{name}','TestRequestController@testRequest');
+
+#upload file
+Route::post('/upload/{name}','TestRequestController@fileUpload');
+
+// validate
+Route::post('register','TestRequestController@fileUpload');
+
+Route::post('user','UserController@user');
+
+
+Route::get('/users/register', function(){
+    return view('register');
+});
+
+
+
+Route::post('save-register','UserController@save')->name('save-register');
+Route::get('success',function(){
+    return view('success');
+})->name('success');
+
+Route::get('/book', function(){
+    return view('tour');
+});
+
+ Route::post('/tour-book','BookingController@save')->name('tour-book');  
+
+ Route::post('/save', function(){
+    return view('tour-show');
+})->name('show');

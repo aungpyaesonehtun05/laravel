@@ -1,6 +1,8 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,7 +56,14 @@ use Illuminate\Support\Facades\Route;
 
 
 //   });
-
+Route::group(['middleware'=>'setLocale'],function(){
+    Route::get('lang',function(){
+        return response()->json([
+            'status' => 'OK',
+            'message' => __('message.SE000')
+        ],200);
+    });
+});
 Route::prefix('products')->group(function (){
     Route::post('create','API\ProductController@create');
     Route::get('index' , 'API\ProductController@index');
@@ -64,4 +73,50 @@ Route::prefix('products')->group(function (){
 });
 
 Route::apiResource('categories', 'API\CategoryController');
+
+#test
+Route::any('/test-request/{name}','TestRequestController@index');
+
+#download file
+Route::post('/download/{name}','TestRequestController@fileUpload');
+
+// Validate
+Route::post('register','TestRequestController@fileUpload')->name('register');
+
+#upload file
+//Route::post('/upload','TestRequestController@fileUpload');
+
+Route::post('user','UserController@user');
+
+//Route::post('book','BookingController@book');
+
+Route::post('student','StudentController@student_reg');
+
+Route::post('update/{student_id}','StudentController@update');
+
+Route::post('teacher', 'TeacherController@store');
+Route::delete('delete/{teacher_id}', 'TeacherController@delete');
+Route::post('teacher/update/{teacher_id}', 'TeacherController@update');
+
+Route::get('classes/index', 'ClassesController@index');
+Route::get('classes/show/{id}', 'ClassesController@show');
+Route::post('classes/store', 'ClassesController@store');
+Route::post('classes/update/{id}', 'ClassesController@update');
+Route::delete('classes/delete/{id}', 'ClassesController@delete');
+
+//excel
+
+Route::get('export', 'ExcelController@export')->name('export');
+Route::get('importExportView', 'ExcelController@importExportView');
+Route::post('import', 'ExcelController@import')->name('import');
+
+Route::get('lang/{locale}',function ($locale){
+    App::setLocale($locale);
+    echo __('message.SE000');
+    
+
+});
+
+
+
 
